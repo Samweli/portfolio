@@ -10,9 +10,9 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    home_address = AddressField()
-    phone_number = PhoneField()
-    location = geomodels.PointField()
+    home_address = models.CharField(max_length=100)
+    phone_number = PhoneField(null=True)
+    location = geomodels.PointField( null=True)
 
 # Adding create and save signals, so as Profile should 
 # be automatically be created or updated when User is 

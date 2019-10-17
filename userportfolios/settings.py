@@ -12,13 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-import environ
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-# reading .env file
-environ.Env.read_env()
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -87,14 +82,12 @@ WSGI_APPLICATION = 'userportfolios.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env('DATABASE_ENGINE',
-            default='django.contrib.gis.db.backends.postgis'),
-        'NAME': env('DATABASE_NAME',
-            default='portfolio'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD':env('DATABASE_PASSWORD'),
-        'HOST':env('DATABASE_HOST'),
-        'PORT':env('DATABASE_PORT')
+        'ENGINE': os.getenv('DATABASE_ENGINE'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD':os.getenv('DATABASE_PASSWORD'),
+        'HOST':os.getenv('DATABASE_HOST'),
+        'PORT':os.getenv('DATABASE_PORT')
     }
 }
 
@@ -137,4 +130,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-GOOGLE_API_KEY = env('GOOGLE_API_KEY')
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')

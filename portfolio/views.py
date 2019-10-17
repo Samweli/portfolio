@@ -1,5 +1,10 @@
 from django.shortcuts import render
+from django.views import generic
+from django.contrib.gis.geos import fromstr
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from .forms import UserForm, ProfileForm
+from .models import Profile
 
 # Create your views here.
 
@@ -19,7 +24,13 @@ def update_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'profiles/profile.html', {
+    return render(request, 'profile/profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+class ProfileList(generic.ListView):
+    model = Profile
+    context_object_name = 'profiles'
+    queryset = Profile.objects.all()
+    template_name = 'profile/index.html'
