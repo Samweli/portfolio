@@ -11,7 +11,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from envs import env
+
+import environ
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,8 +88,9 @@ WSGI_APPLICATION = 'userportfolios.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': env('DATABASE_ENGINE',
-            'django.contrib.gis.db.backends.postgis'),
-        'NAME': env('DATABASE_NAME','portfolio'),
+            default='django.contrib.gis.db.backends.postgis'),
+        'NAME': env('DATABASE_NAME',
+            default='portfolio'),
         'USER': env('DATABASE_USER'),
         'PASSWORD':env('DATABASE_PASSWORD'),
         'HOST':env('DATABASE_HOST'),
