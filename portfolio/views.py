@@ -12,7 +12,11 @@ from .forms import UserForm, ProfileForm
 from .models import Profile
 from .serializers import CustomSerializer
 
-# Create your views here.
+
+# This will make it simple to edit both User and Profile
+# at once, due to the way the Profile class has been
+# extended from Django User class
+
 
 @login_required
 @transaction.atomic
@@ -34,6 +38,8 @@ def update_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+
 
 def user_list(request):
 

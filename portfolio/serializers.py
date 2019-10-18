@@ -7,6 +7,9 @@ from django.db.models import Manager
 
 JSON_ALLOWED_OBJECTS = (dict,list,tuple,str,int,bool)
 
+# This custom serializer is for accessing other relating model 
+# fields
+
 class CustomSerializer(Serializer):
 
     def end_object(self, obj):

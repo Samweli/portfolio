@@ -1,6 +1,8 @@
+{% load leaflet_tags %}
 <html>
-<head>
-
+  <head>
+    {% leaflet_js plugins="forms" %}
+    {% leaflet_css plugins="forms" %}
 	<style>
 
 		body{

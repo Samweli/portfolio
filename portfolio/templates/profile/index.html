@@ -6,6 +6,7 @@
     <title>All Users</title>
     {% load static %}
     <script src='{% static "js/mapbox-gl.js" %}'></script>
+    <link href='{% static "css/icon.css" %}' rel="stylesheet"/>
     <link href='{% static "css/mapbox-gl.css" %}' rel='stylesheet' />
     <link href='{% static "css/assembly.min.css" %}' rel="stylesheet">
     <style>
@@ -57,22 +58,28 @@
         map.addControl(new mapboxgl.NavigationControl());
         map.on('load', function() {
 
-            map.addLayer({
-                "id": "points",
-                "type": "symbol",
-                "source": {
-                    "type": "geojson",
-                    "data": {{ users | safe }}
+            map.loadImage('/static/icon/user.png',
+             function(error, image) {
+                if (error) throw error;
+                map.addImage('user', image);
 
-                },
-                "layout": {
-                    "icon-image": "circle-15",
-                    "text-font": ["Open Sans Semibold",
-                     "Arial Unicode MS Bold"],
-                    "text-offset": [0, 0.6],
-                    "text-anchor": "top"
-                }
-            });
+                map.addLayer({
+                    "id": "points",
+                    "type": "symbol",
+                    "source": {
+                        "type": "geojson",
+                        "data": {{ users | safe }}
+
+                    },
+                    "layout": {
+                        "icon-image": "user",
+                        "text-font": ["Open Sans Semibold",
+                         "Arial Unicode MS Bold"],
+                        "text-offset": [0, 0.6],
+                        "text-anchor": "top"
+                    }
+                });
+             });
         });
 
         // When a click event occurs on a feature in the places layer, open a popup at the

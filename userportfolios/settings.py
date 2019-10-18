@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'portfolio',
     'phone_field',
     'address',
+    'leaflet'
 ]
 
 MIDDLEWARE = [

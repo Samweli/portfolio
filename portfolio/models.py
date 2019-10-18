@@ -12,9 +12,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     home_address = models.CharField(max_length=100)
     phone_number = PhoneField(null=True)
-    location = geomodels.PointField( null=True)
+    location = geomodels.PointField(null=True)
 
-# Adding create and save signals, so as Profile should 
+# Adding create and save signals, so Profile should 
 # be automatically be created or updated when User is 
 # created or updated
 
