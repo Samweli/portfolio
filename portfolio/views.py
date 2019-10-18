@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.serializers import serialize
+from django.contrib import messages
+from django.utils.translation import gettext as _
+from django.shortcuts import redirect
 from .forms import UserForm, ProfileForm
 from .models import Profile
 from .serializers import CustomSerializer
@@ -21,7 +24,7 @@ def update_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, _('Your profile was successfully updated!'))
-            return redirect('settings:profile')
+            return redirect('update_profile')
         else:
             messages.error(request, _('Please correct the error below.'))
     else:

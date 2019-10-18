@@ -131,3 +131,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+
+LOGIN_REDIRECT_URL = '/users'
+LOGOUT_REDIRECT_URL = '/users'
