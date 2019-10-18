@@ -19,5 +19,7 @@ from portfolio import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', views.user_list, name="user_list")
+    path('users/', views.user_list, name="user_list"),
+    path('users/update/',
+     views.update_profile, name='update_profile')
 ]
