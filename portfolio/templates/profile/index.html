@@ -22,7 +22,11 @@
 </head>
 
 <body>
+    <h1> 
+     {{ users}}
+    </h1>
     <div id='map'></div>
+
 
     <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtdHdlc2EiLCJhIjoiZTc1OTQ4ODE0ZmY2MzY0MGYwMDNjOWNlYTYxMjU4NDYifQ.F1zCcOYqpXWd4C9l9xqvEQ';
@@ -43,7 +47,7 @@
                 "type": "symbol",
                 "source": {
                     "type": "geojson",
-                    "data": {{profiles | safe}}
+                    "data": {{ users | safe }}
 
                 },
                 "layout": {
@@ -60,7 +64,13 @@
         // location of the feature, with description HTML from its properties.
         map.on('click', 'points', function(e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = 'Address: ' + 
+            var description = 'First Name: '+
+                            e.features[0].properties.user__first_name +
+                            '<br>' + 
+                            'Last Name: '+
+                            e.features[0].properties.user_last_name + 
+                            '<br>' +
+                            'Address: ' + 
                             e.features[0].properties.home_address +
                             '<br>' + 
                             'Phone Number: ' + 

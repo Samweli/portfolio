@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.gis.geos import fromstr
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.serializers import serialize
 from .forms import UserForm, ProfileForm
 from .models import Profile
+from .serializers import CustomSerializer
 
 # Create your views here.
 
@@ -30,12 +32,15 @@ def update_profile(request):
         'profile_form': profile_form
     })
 
-class ProfileList(generic.ListView):
-    model = Profile
-    context_object_name = 'profiles'
-    queryset = serialize('geojson',
-     Profile.objects.all(),
+def user_list(request):
+
+    serializers = CustomSerializer()
+    users = serializers.serialize(
+     Profile.objects.all().select_related('user'),
      geometry_field='location', 
-     fields=('home_address',
-     	'phone_number'))
-    template_name = 'profile/index.html'
+     fields=('user__first_name','user__last_name',
+     	'home_address','phone_number'))
+
+    return render(request, 
+    	'profile/index.html',
+    	{'users': users})
