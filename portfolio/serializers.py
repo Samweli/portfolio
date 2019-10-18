@@ -1,9 +1,5 @@
 from django.contrib.gis.serializers.geojson import Serializer
 from django.db.models import Manager
-# FYI: It can be any of the following as well:
-# from django.core.serializers.pyyaml import Serializer
-# from django.core.serializers.python import Serializer
-# from django.core.serializers.json import Serializer
 
 JSON_ALLOWED_OBJECTS = (dict,list,tuple,str,int,bool)
 

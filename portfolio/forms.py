@@ -14,7 +14,10 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ('home_address', 'phone_number', 'location')
+		fields = (
+			'home_address',
+			'phone_number',
+			'location')
 		widgets = {'location': LeafletWidget()}
 
 class SignUpForm(UserCreationForm):
@@ -28,7 +31,7 @@ class SignUpForm(UserCreationForm):
     	help_text='Optional.')
     email = forms.EmailField(
     	max_length=254, 
-    	help_text='Required. Inform a valid email address.')
+    	help_text='Required. Input a valid email address.')
 
     class Meta:
         model = User
