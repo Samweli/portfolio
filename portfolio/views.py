@@ -3,6 +3,7 @@ from django.views import generic
 from django.contrib.gis.geos import fromstr
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.core.serializers import serialize
 from .forms import UserForm, ProfileForm
 from .models import Profile
 
@@ -32,5 +33,9 @@ def update_profile(request):
 class ProfileList(generic.ListView):
     model = Profile
     context_object_name = 'profiles'
-    queryset = Profile.objects.all()
+    queryset = serialize('geojson',
+     Profile.objects.all(),
+     geometry_field='location', 
+     fields=('home_address',
+     	'phone_number'))
     template_name = 'profile/index.html'

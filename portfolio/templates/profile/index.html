@@ -1,19 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>All Users</title>
-    </head>
+
+<head>
+    <meta charset="utf-8">
+    <title>All Users</title>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
 <body>
-    <h1>All users</h1>
-    {% if profiles %}
-    <ul>
-    {% for profile in profiles %}
-        <li>
-        {{ profile.home_address }}: {{profile.location}}
-        </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+    <div id='map'></div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtdHdlc2EiLCJhIjoiZTc1OTQ4ODE0ZmY2MzY0MGYwMDNjOWNlYTYxMjU4NDYifQ.F1zCcOYqpXWd4C9l9xqvEQ';
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [23.536, 5.902],
+            zoom: 1
+        });
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+        map.on('load', function() {
+
+            map.addLayer({
+                "id": "points",
+                "type": "symbol",
+                "source": {
+                    "type": "geojson",
+                    "data": {{profiles | safe}}
+
+                },
+                "layout": {
+                    "icon-image": "circle-15",
+                    "text-font": ["Open Sans Semibold",
+                     "Arial Unicode MS Bold"],
+                    "text-offset": [0, 0.6],
+                    "text-anchor": "top"
+                }
+            });
+        });
+
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        map.on('click', 'points', function(e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = 'Address: ' + 
+                            e.features[0].properties.home_address +
+                            '<br>' + 
+                            'Phone Number: ' + 
+                            e.features[0].properties.phone_number;
+
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'points', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'points', function() {
+            map.getCanvas().style.cursor = '';
+        });
+    </script>
 </body>
+
 </html>
