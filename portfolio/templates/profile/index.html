@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8">
     <title>All Users</title>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
-    <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet">
+    {% load static %}
+    <script src='{% static "js/mapbox-gl.js" %}'></script>
+    <link href='{% static "css/mapbox-gl.css" %}' rel='stylesheet' />
+    <link href='{% static "css/assembly.min.css" %}' rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -29,13 +30,13 @@
 
     <div class="listing-group header absolute top left ml12 mt12 border--white bg-white shadow-darken10 z1">
         {% if not user.is_authenticated %}
-            <a class="txt-h5" href="/accounts/login"> Login </a>
-            <a class="txt-h5" href="/signup"> Signup </a>
+            <a class="txt-h5 link" href="/accounts/login"> Login </a>
+            <a class="txt-h5 link" href="/signup"> Signup </a>
         {% endif %}
         {% if user.is_authenticated %}
            <p>{{ user.username }} </p>   
-           <a class="txt-h5" href="/users/update"> Edit Profile </a>
-           <a style='color:"blue";' href="{% url 'logout' %}">logout</a>
+           <a class="txt-h5 link" href="/users/update"> Edit Profile </a>
+           <a class="link" href="{% url 'logout' %}">logout</a>
         {% endif %}
 
     </div>
@@ -82,7 +83,7 @@
                             e.features[0].properties.user__first_name +
                             '<br>' + 
                             'Last Name: '+
-                            e.features[0].properties.user_last_name + 
+                            e.features[0].properties.user__last_name + 
                             '<br>' +
                             'Address: ' + 
                             e.features[0].properties.home_address +
