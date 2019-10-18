@@ -1,0 +1,32 @@
+{% load leaflet_tags %}
+<html>
+  <head>
+    {% leaflet_js plugins="forms" %}
+    {% leaflet_css plugins="forms" %}
+	<style>
+
+		body{
+			margin:10px;
+		}
+	</style>
+
+</head>
+<body>
+
+  <h1>Sign up</h1>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    <button type="submit">Sign up</button>
+  </form>
+</body>
+
+</html>
